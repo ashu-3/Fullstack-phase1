@@ -1,21 +1,19 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
-
+//code to add files
 class AddFiles {
 	
 	void addFile() throws IOException {
 		
-		System.out.println("Enter File Name");
-		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter File Name to add");
 		
-		String fileName = sc.next();
+		String fileName = FIlesOperation.sc.next();
 		
 		try {
-			File file = new File("E://"+fileName);
+			File file = new File("D://"+fileName);
 			
 			if(file.createNewFile()) {
 				System.out.println("FIle created successfully");
@@ -25,7 +23,6 @@ class AddFiles {
 				System.out.println("File already exists");
 			}
 			
-			sc.close();
 		}
 		catch(Exception e) {
 			System.out.println("Path not found Exception");
@@ -33,14 +30,15 @@ class AddFiles {
 	}
 }
 
+
+//delete files
 class DeleteFiles {
 	void deleteFile() throws IOException {
 		
 		
 		System.out.println("Enter File Name to delete");
-		Scanner sc = new Scanner(System.in);
 		
-		String fileName = sc.next();
+		String fileName = FIlesOperation.sc.next();
 		
 		File file = new File("D://"+fileName);
 		
@@ -52,19 +50,17 @@ class DeleteFiles {
 			System.out.println("File Not found");
 		}
 		
-		sc.close();
 	}
 }
 
-class FileOptions {
-	
-
-}
-
+//sorting files
 class SortFiles {
 	
 	ArrayList<String> sortFile() throws IOException {
 		ArrayList<String> list = new ArrayList<String>();
+		
+		System.out.println("sorted files");
+		
 		
 		try {
 			File folder = new File("D://");
@@ -81,10 +77,10 @@ class SortFiles {
 					if (listOfFiles[i].isFile()) {
 						list.add(listOfFiles[i].getName());
 					}
-				    //sorting folder
+				    /*sorting folder
 				    else if (listOfFiles[i].isDirectory()) {
 					   list.add(listOfFiles[i].getName());
-				    }			  
+				    }*/			  
 				}
 				System.out.println(list);	
 			}
@@ -101,21 +97,21 @@ class SortFiles {
 	}
 }
 
+//using inheritance for search
 class SearchFiles extends SortFiles{
 	void searchFile() throws IOException {
 		
 		ArrayList<String> list = new ArrayList<String>();
 		Boolean flag =false;
 		System.out.println("Enter File Name to search");
-		Scanner sc = new Scanner(System.in);
 		
-		String fileName = sc.next();
+		String fileName = FIlesOperation.sc.next();
 		
 		list = super.sortFile();
 		//System.out.println(list);
 		for (String ele : list){
-	         if (ele.contains(fileName)){
-	        	   System.out.println("");
+	         if (ele.equals(fileName)){
+	        	   System.out.println(" ");
 	               System.out.println("FIle " + fileName + " Found");
 	               flag=true;
 	               break;
@@ -126,7 +122,6 @@ class SearchFiles extends SortFiles{
 		if(flag==false) {
 			System.out.println("File not found in search");
 		}
-		sc.close();
 	}
 }
 
@@ -134,72 +129,77 @@ class SearchFiles extends SortFiles{
 
 public class FIlesOperation {
 	
+	//reusable to scanner
+	public static Scanner sc= new Scanner(System.in);
+	
 	public static void main(String args[]) throws IOException {
-		Scanner sc= new Scanner(System.in);
-		Scanner scr= new Scanner(System.in);
 		
-		System.out.println("Developer: Ashwath");
-		System.out.println("---------------");
-		System.out.println("Welecome to DigiLocker");
-		System.out.println("---------------");
-		System.out.println("Please Enter below options");
-		System.out.println("---------------");
-		System.out.println("1.Sort");
-		System.out.println("2.Oprations");
-		System.out.println("3.Quit");
-		
-		
+		Boolean mainFlag =true;
+		Boolean subFlag =true;
+
 		AddFiles add = new AddFiles();
 		DeleteFiles del = new DeleteFiles();
 		SearchFiles ser = new SearchFiles();
 		SortFiles sor = new SortFiles();
 		
 		
-		int num = sc.nextInt();
-//		while(num!=3) {
-		if(num==1) {
-			sor.sortFile();
-			//break;
-		}
-		else if(num==2) {
+		OUTER:
+		while(mainFlag) {
+			System.out.println("Developer: Ashwath");
 			System.out.println("---------------");
-			System.out.println("please Enter Your option for File Opearions");
-			System.out.println("1.Add files");
-			System.out.println("2.Delete Files");
-			System.out.println("3.Search a file by Name");
-			System.out.println("4:Go back to Main menu");
-			
-			int opt = scr.nextInt();
-			if(opt==1) {
-				add.addFile();
-				//break;
-			}
-			
-			else if(opt==2) {
-     			del.deleteFile();
-			}
-			
-			else if(opt==3) {
-				ser.searchFile();
-			}
-			
-			else if(opt==4){
-				
-			}
-			
-			else {
-				System.out.println("Please Enter valid input");
-			}
-			
-			scr.close();
-		}
-		else if(num==3) {
-			System.out.println("You are exited..");
-			sc.close();
-		}
+			System.out.println("Welecome to DigiLocker");
+			System.out.println("---------------");
+			System.out.println("Please Enter below options");
+			System.out.println("---------------");
+			System.out.println("1.Sort");
+			System.out.println("2.Oprations");
+			System.out.println("3.Quit");
 		
-		else {
-			System.out.println("Please Enter Valid Input");
+	
+			int choice =sc.nextInt();
+			
+			switch(choice) {
+			
+			case 1: sor.sortFile();
+					break;
+					
+			case 2: 
+					while(subFlag) {
+						System.out.println("---------------");
+						System.out.println("please Enter Your option for File Opearions");
+						System.out.println("1.Add files");
+						System.out.println("2.Delete Files");
+						System.out.println("3.Search a file by Name");
+						System.out.println("4:Go back to Main menu");
+						
+						int subChoice = sc.nextInt();
+						
+						switch(subChoice) {
+							case 1:	add.addFile();
+									break;
+							
+							case 2: del.deleteFile();
+									break;
+									
+							case 3: ser.searchFile();
+									break;
+							
+							case 4: System.out.println("you are Backing to Main Menu");
+									continue OUTER;
+							
+							default: System.out.println("Enter valid choice");
+						}
+					}
+					
+					
+				
+			case 3: System.out.println("You are exited from the application");
+					mainFlag =false;
+					break;
+			
+			default: System.out.println("Please enter valid choice");
+			
+			}
 		}
 	}
 }
